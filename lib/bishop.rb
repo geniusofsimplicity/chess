@@ -1,3 +1,5 @@
-class Bishop
+require "chessman.rb"
+
+class Bishop < Chessman
 
 end

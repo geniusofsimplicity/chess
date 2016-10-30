@@ -10,36 +10,36 @@ class Board
 		@board = {}				
 		("a".."h").each do |i|
 			pawn_w = Pawn.new("white")
-			@board.add_chessman([1, i], pawn_w)
+			add_chessman([1, i], pawn_w)
 			pawn_b = Pawn.new("black")
-			@board.add_chessman([6, 7 - i], pawn_b)					
+			add_chessman([6, i], pawn_b)					
 		end
 		["a", "h"].each do |i|
 			rook_w = Rook.new("white")
-			@board.add_chessman([0, i], rook_w)
+			add_chessman([0, i], rook_w)
 			rook_b = Rook.new("black")
-			@board.add_chessman([7, i], rook_b)
+			add_chessman([7, i], rook_b)
 		end
 		["b", "g"].each do |i|
 			knight_w = Knight.new("white")
-			@board.add_chessman([0, i], knight_w)
+			add_chessman([0, i], knight_w)
 			knight_b = Knight.new("black")
-			@board.add_chessman([7, i], knight_b)
+			add_chessman([7, i], knight_b)
 		end
 		["c", "f"].each do |i|
 			bishop_w = Bishop.new("white")
-			@board.add_chessman([0, i], bishop_w)
+			add_chessman([0, i], bishop_w)
 			bishop_b = Bishop.new("black")
-			@board.add_chessman([7, i], bishop_b)
+			add_chessman([7, i], bishop_b)
 		end
 		queen_w = Queen.new("white")
-		@board.add_chessman([0, "d"], queen_w)
+		add_chessman([0, "d"], queen_w)
 		queen_b = Queen.new("black")
-		@board.add_chessman([7, "d"], queen_b)
+		add_chessman([7, "d"], queen_b)
 		king_w = King.new("white")
-		@board.add_chessman([0, "e"], king_w)
+		add_chessman([0, "e"], king_w)
 		king_b = King.new("black")
-		@board.add_chessman([7, "e"], king_b)		
+		add_chessman([7, "e"], king_b)		
 	end
 
 	private
