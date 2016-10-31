@@ -1,5 +1,5 @@
-require "player.rb"
-require "board.rb"
+require_relative "player.rb"
+require_relative "board.rb"
 
 class Chess
 	def self.setup
