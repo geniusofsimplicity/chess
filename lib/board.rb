@@ -43,10 +43,8 @@ class Board
 		@background = "8| _ _ _ _ _ _ _ _\n7| _ _ _ _ _ _ _ _\n6| _ _ _ _ _ _ _ _\n5| _ _ _ _ _ _ _ _\n4| _ _ _ _ _ _ _ _\n3| _ _ _ _ _ _ _ _\n2| _ _ _ _ _ _ _ _\n1| _ _ _ _ _ _ _ _\n==================\n | a b c d e f g h"
 	end
 
-	def print
-		to_print = place_chessmen
-		puts to_print
-		# to_print
+	def print		
+		puts place_chessmen
 	end
 
 	private
