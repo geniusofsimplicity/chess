@@ -16,8 +16,12 @@ class Chess
 		loop do
 			@board.print
 			puts "Player #{@current_player} (#{@current_player.colour}), it is your turn."		
-			move = get_move
-			@board.reflect_move(move)
+			loop do
+				move_from = get_move_start
+				move_to = get_move_end				
+				break if @board.reflect_move(move_from, move_to)
+			end
+						
 			if @board.end_of_game?
 				@board.print
 				puts "Player #{@current_player} (#{@current_player.colour}) has won!"
@@ -30,10 +34,22 @@ class Chess
 
 	private
 
-	def get_move
+	def get_move_start
 		puts "Please, enter the position of the chessman\
-					you want to move"
-		input = read_user_input		
+					you want to move from"
+		input = read_user_input #for the sake of testing
+		move = []
+		digit = input.scan(/[1-8]/)[0]
+		letter = input.scan(/[a-h]/)[0]
+		move << digit.to_i - 1 if digit
+		move << letter if letter
+		return move.size == 2 ? move : nil
+	end
+
+	def get_move_end
+		puts "Please, enter the position of the chessman\
+					you want to move to"
+		input = read_user_input #for the sake of testing		
 		move = []
 		digit = input.scan(/[1-8]/)[0]
 		letter = input.scan(/[a-h]/)[0]

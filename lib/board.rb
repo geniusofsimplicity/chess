@@ -47,6 +47,21 @@ class Board
 		puts place_chessmen
 	end
 
+	def reflect_move(move_from, move_to)
+		if valid_move?(move_from, move_to)
+			chessman = @board[move_from]
+			@board[move_from]	= nil
+			@board[move_to] = chessman
+			return true
+		end			
+		false
+	end
+
+	def valid_move?(move_from, move_to)
+		chessman = @board[move_from]
+		chessman.valid_move?(move_from, move_to, @board)
+	end
+
 	private
 
 	def place_chessmen
