@@ -19,19 +19,26 @@ class Rook < Chessman
 		no_leap = false		
 
 		if rank_move
-			in_the_way = board.select do |position, chessman|
-				position[1] == move_from[1]
-			end
-			no_leap = in_the_way.count == 0
+			in_the_way = 0
+			the_way = [move_from[0], move_to[0]].sort
+			((the_way[0] + 1)..(the_way[1] - 1)).each do |row|
+				in_the_way += 1 if board[[row, move_from[1]]]
+			end			
+			no_leap = in_the_way == 0
 		end
 
 		if file_move
-			in_the_way = board.select do |position, chessman|
-				position[0] == move_from[0]
+			in_the_way = 0
+			the_way = [move_from[1], move_to[1]].sort
+			(((the_way[0].ord + 1).chr)..((the_way[1].ord - 1).chr)).each do |column|
+				in_the_way += 1 if board[[move_from[0], column]]
 			end
-			no_leap = in_the_way.count == 0
+			no_leap = in_the_way == 0
 		end
-		# rank_move || file_move || no_leap
-		no_leap # no_leap is true only if either rank_move or file_move is true
+
+		to_loyal = board[move_to] && board[move_to].colour == @colour
+
+		# rank_move || file_move || no_leap		
+		no_leap && (!to_loyal) # no_leap is true only if either rank_move or file_move is true
 	end
 end

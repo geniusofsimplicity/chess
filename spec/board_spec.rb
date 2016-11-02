@@ -72,12 +72,5 @@ describe Board do
 			board
 		end
 		it { expect(board_with_one_piece.instance_variable_get(:@board)).to eql({[1, "h"] => pawn}) }
-
-		# TODO: delete the example below because it is for testing only
-		# it "" do
-		# 	board = Board.new			
-		# 	puts
-		# 	board.print
-		# end
 	end	
 end

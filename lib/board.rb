@@ -49,8 +49,7 @@ class Board
 
 	def reflect_move(move_from, move_to)
 		if valid_move?(move_from, move_to)
-			chessman = @board[move_from]
-			@board[move_from]	= nil
+			chessman = @board.delete(move_from)			
 			@board[move_to] = chessman
 			return true
 		end			
@@ -60,6 +59,22 @@ class Board
 	def valid_move?(move_from, move_to)
 		chessman = @board[move_from]
 		chessman.valid_move?(move_from, move_to, @board)
+	end
+
+	def end_of_game?(colour)
+		puts "@borad = #{@board}"
+		enemy_king = @board.select do |position, chessman|			
+			chessman.colour != colour && chessman.is_a?(King)
+		end		
+		king_position = enemy_king.keys[0]
+		loyal_chessmen = @board.select do |position, chessman|
+			chessman.colour == colour
+		end		
+		checkmate = false
+		loyal_chessmen.each do |position, chessman|			
+			checkmate ||= chessman.valid_move?(position, king_position, @board)
+		end
+		checkmate
 	end
 
 	private

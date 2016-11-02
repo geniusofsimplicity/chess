@@ -7,6 +7,7 @@ class Chess
 		colours = ["white", "black"]
 		player1_colour = colours.sample
 		player2_colour = colours - [player1_colour]
+		player2_colour = player2_colour[0]
 		player1 = Player.create(player1_colour)
 		player2 = Player.create(player2_colour)
 		self.new(board, player1, player2)
@@ -18,11 +19,12 @@ class Chess
 			puts "Player #{@current_player} (#{@current_player.colour}), it is your turn."		
 			loop do
 				move_from = get_move_start
-				move_to = get_move_end				
+				move_to = get_move_end
+				next if move_from.nil? || move_to.nil?			
 				break if @board.reflect_move(move_from, move_to)
 			end
-						
-			if @board.end_of_game?
+
+			if @board.end_of_game?(@current_player.colour)
 				@board.print
 				puts "Player #{@current_player} (#{@current_player.colour}) has won!"
 				return
@@ -35,8 +37,8 @@ class Chess
 	private
 
 	def get_move_start
-		puts "Please, enter the position of the chessman\
-					you want to move from"
+		puts "Please, enter the position of the chessman"\
+					" you want to move from"
 		input = read_user_input #for the sake of testing
 		move = []
 		digit = input.scan(/[1-8]/)[0]
@@ -47,8 +49,8 @@ class Chess
 	end
 
 	def get_move_end
-		puts "Please, enter the position of the chessman\
-					you want to move to"
+		puts "Please, enter the position of the chessman"\
+					" you want to move to"
 		input = read_user_input #for the sake of testing		
 		move = []
 		digit = input.scan(/[1-8]/)[0]
@@ -68,5 +70,7 @@ class Chess
 		@player2 = player2
 		@current_player = @player1.colour == "white" ? @player1 : @player2
 	end
-
 end
+
+# game = Chess.setup
+# game.start

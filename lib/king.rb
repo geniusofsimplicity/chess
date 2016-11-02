@@ -10,7 +10,7 @@ class King < Chessman
 	end
 
 	#TODO: add special move of the king
-	def valid_move?(move_from, move_to)
+	def valid_move?(move_from, move_to, board)
 		diff_in_rows = (move_from[0] - move_to[0]).abs
 		diff_in_columns = (move_from[1].ord - move_to[1].ord).abs
 		diff_in_columns < 2 && diff_in_rows < 2
