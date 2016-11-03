@@ -16,11 +16,11 @@ class Bishop < Chessman
 		diagonal_move = diff_in_columns == diff_in_rows
 		no_leap = false
 
-		if diagonal_move
+		if diagonal_move			
 			in_the_way = board.select do |position, chessman|
 				diff_in_rows = (position[0] - move_to[0]).abs
-				diff_in_columns = (position[1].ord - move_to[1].ord).abs
-				diff_in_columns == diff_in_rows
+				diff_in_columns = (position[1].ord - move_to[1].ord).abs				
+				diff_in_columns == diff_in_rows && self != chessman
 			end
 			no_leap = in_the_way.count == 0
 		end

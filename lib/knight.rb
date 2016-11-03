@@ -12,7 +12,7 @@ class Knight < Chessman
 	def valid_move?(move_from, move_to, board)
 		diff_in_rows = (move_from[0] - move_to[0]).abs
 		diff_in_columns = (move_from[1].ord - move_to[1].ord).abs
-		(diff_in_columns == 2 && diff_in_rows == 5) ||
-			(diff_in_columns == 5 && diff_in_rows == 2)
+		(diff_in_columns == 1 && diff_in_rows == 2) ||
+			(diff_in_columns == 2 && diff_in_rows == 1)
 	end
 end
