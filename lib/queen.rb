@@ -24,21 +24,21 @@ class Queen < Chessman
 			in_the_way = board.select do |position, chessman|
 				diff_in_rows = (position[0] - move_to[0]).abs
 				diff_in_columns = (position[1].ord - move_to[1].ord).abs
-				diff_in_columns == diff_in_rows
+				diff_in_columns == diff_in_rows && self != chessman
 			end
 			no_leap = in_the_way.count == 0
 		end
 
 		if rank_move
 			in_the_way = board.select do |position, chessman|
-				position[1] == move_from[1]
+				position[1] == move_from[1]  && self != chessman
 			end
 			no_leap = in_the_way.count == 0
 		end
 
 		if file_move
 			in_the_way = board.select do |position, chessman|
-				position[0] == move_from[0]
+				position[0] == move_from[0] && self != chessman
 			end
 			no_leap = in_the_way.count == 0
 		end
