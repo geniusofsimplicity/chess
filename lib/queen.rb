@@ -24,25 +24,31 @@ class Queen < Chessman
 			in_the_way = board.select do |position, chessman|
 				diff_in_rows = (position[0] - move_to[0]).abs
 				diff_in_columns = (position[1].ord - move_to[1].ord).abs
-				diff_in_columns == diff_in_rows && self != chessman
+				diff_in_columns == diff_in_rows && position != move_to && self != chessman
 			end
 			no_leap = in_the_way.count == 0
 		end
 
 		if rank_move
-			in_the_way = board.select do |position, chessman|
-				position[1] == move_from[1]  && self != chessman
-			end
-			no_leap = in_the_way.count == 0
+			in_the_way = 0
+			the_way = [move_from[0], move_to[0]].sort
+			((the_way[0] + 1)..(the_way[1] - 1)).each do |row|
+				in_the_way += 1 if board[[row, move_from[1]]]
+			end			
+			no_leap = in_the_way == 0
 		end
 
 		if file_move
-			in_the_way = board.select do |position, chessman|
-				position[0] == move_from[0] && self != chessman
+			in_the_way = 0
+			the_way = [move_from[1], move_to[1]].sort
+			(((the_way[0].ord + 1).chr)..((the_way[1].ord - 1).chr)).each do |column|
+				in_the_way += 1 if board[[move_from[0], column]]
 			end
-			no_leap = in_the_way.count == 0
+			no_leap = in_the_way == 0
 		end
 
-		no_leap # no_leap is true only if one of the typical moves is true
+		to_loyal = board[move_to] && board[move_to].colour == @colour
+
+		no_leap && (!to_loyal) # no_leap is true only if one of the typical moves is true
 	end
 end

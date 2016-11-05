@@ -6,7 +6,13 @@ require_relative "knight.rb"
 require_relative "pawn.rb"
 
 class Board
-	def initialize
+	attr_reader :board
+	def initialize(board = nil)
+		@background = "8| _ _ _ _ _ _ _ _\n7| _ _ _ _ _ _ _ _\n6| _ _ _ _ _ _ _ _\n5| _ _ _ _ _ _ _ _\n4| _ _ _ _ _ _ _ _\n3| _ _ _ _ _ _ _ _\n2| _ _ _ _ _ _ _ _\n1| _ _ _ _ _ _ _ _\n==================\n | a b c d e f g h"
+		if board
+			@board = board
+			return
+		end
 		@board = {}				
 		("a".."h").each do |i|
 			pawn_w = Pawn.new("white")
@@ -40,41 +46,44 @@ class Board
 		add_chessman([0, "e"], king_w)
 		king_b = King.new("black")
 		add_chessman([7, "e"], king_b)
-		@background = "8| _ _ _ _ _ _ _ _\n7| _ _ _ _ _ _ _ _\n6| _ _ _ _ _ _ _ _\n5| _ _ _ _ _ _ _ _\n4| _ _ _ _ _ _ _ _\n3| _ _ _ _ _ _ _ _\n2| _ _ _ _ _ _ _ _\n1| _ _ _ _ _ _ _ _\n==================\n | a b c d e f g h"
 	end
 
 	def print		
 		puts place_chessmen
 	end
 
-	def reflect_move(move_from, move_to)
-		if valid_move?(move_from, move_to)
+	def reflect_move(move_from, move_to, checking = false)
+		if checking || valid_move?(move_from, move_to)
 			chessman = @board.delete(move_from)			
 			@board[move_to] = chessman
 			return true
-		end			
+		end
 		false
 	end
 
-	def valid_move?(move_from, move_to)
+	def valid_move?(move_from, move_to)		
 		chessman = @board[move_from]
-		chessman.valid_move?(move_from, move_to, @board)
+		chessman.valid_move?(move_from, move_to, board)
 	end
 
-	def end_of_game?(colour)
-		puts "@borad = #{@board}"
+	def checkmate?(colour)		
+		temp_board = Board.new
+
+	end
+
+	def check?(colour)
 		enemy_king = @board.select do |position, chessman|			
 			chessman.colour != colour && chessman.is_a?(King)
 		end		
 		king_position = enemy_king.keys[0]
 		loyal_chessmen = @board.select do |position, chessman|
 			chessman.colour == colour
-		end		
-		checkmate = false
-		loyal_chessmen.each do |position, chessman|			
-			checkmate ||= chessman.valid_move?(position, king_position, @board)
 		end
-		checkmate
+		check = false
+		loyal_chessmen.each do |position, chessman|
+			check ||= chessman.valid_move?(position, king_position, @board)
+		end
+		check
 	end
 
 	private

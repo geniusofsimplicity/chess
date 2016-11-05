@@ -9,7 +9,7 @@ class Pawn < Chessman
 		return U_SYMBOL_BLACK if @colour == "black"
 	end
 
-	def valid_move?(move_from, move_to, board)
+	def valid_move?(move_from, move_to, board)		
 		diff_in_rows = move_to[0] - move_from[0]
 		diff_in_columns = (move_from[1].ord - move_to[1].ord).abs
 		normal_move_white = 

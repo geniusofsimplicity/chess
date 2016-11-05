@@ -14,9 +14,10 @@ class Chess
 	end
 
 	def start
+		winner = false
 		loop do
 			@board.print
-			puts "Player #{@current_player} (#{@current_player.colour}), it is your turn."		
+			puts "Player #{@current_player}, it is your turn."		
 			loop do
 				move_from = get_move_start
 				move_to = get_move_end
@@ -25,13 +26,18 @@ class Chess
 			end
 
 			if @board.end_of_game?(@current_player.colour)
-				@board.print
-				puts "Player #{@current_player} (#{@current_player.colour}) has won!"
-				return
+				winner = true				
+				break				
 			end
 			@current_player = @current_player == @player1 ? @player2 : @player1			
 		end
-		puts "It is draw."		
+		if winner
+			@board.print
+			puts "Player #{@current_player} has won!"
+		else
+			puts "It is draw."
+		end
+		
 	end
 
 	private

@@ -12,4 +12,8 @@ class Player
 		@name = name		
 		@colour = colour
 	end
+
+	def to_s
+		"#{@name} (#{@colour})"
+	end
 end
