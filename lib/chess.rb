@@ -22,12 +22,19 @@ class Chess
 				move_from = get_move_start
 				move_to = get_move_end
 				next if move_from.nil? || move_to.nil?			
-				break if @board.reflect_move(move_from, move_to)
+				break if @board.reflect_move(move_from, move_to, @current_player.colour)
 			end
-
-			if @board.end_of_game?(@current_player.colour)
+			check = @board.check?(@current_player.colour)
+			checkmate = false
+			if check
+				checkmate = @board.checkmate?(@current_player.colour)
+			end
+			if checkmate
 				winner = true				
 				break				
+			end
+			if check
+				puts "CHECK! #{@current_player}, your king is in danger!"
 			end
 			@current_player = @current_player == @player1 ? @player2 : @player1			
 		end
@@ -78,5 +85,5 @@ class Chess
 	end
 end
 
-# game = Chess.setup
-# game.start
+game = Chess.setup
+game.start

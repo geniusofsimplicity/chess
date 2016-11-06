@@ -15,22 +15,26 @@ class Pawn < Chessman
 		normal_move_white = 
 												diff_in_columns == 0 && 					#no side moves
 												move_to[0] - move_from[0] == 1 &&	#only one up
+												board[move_to].nil? && 						# must be empty
 												@colour == "white"								#for white pawns
 		first_move_white = 
 												diff_in_columns == 0 && 					#no side moves
 												move_from[0] == 1 &&							#from starting position
 												move_to[0] == 3	&&								#special move
+												(board[move_to].nil? && board[[move_to[0] - 1, move_to[1]]].nil?) && 	# must be empty
 												@colour == "white" &&							#for white pawns
 												board[[move_from[0] + 1, move_from[1]]].nil?
 		normal_move_black = 
 												diff_in_columns == 0 && 						#no side moves
-												move_to[0] - move_from[0] == -1	&& 	#only one up
+												move_to[0] - move_from[0] == -1	&& 	#only one down
+												board[move_to].nil? && 							# must be empty
 												@colour == "black"									#for black pawns
 
 		first_move_black = 
 												diff_in_columns == 0 && 				#no side moves
 												move_from[0] == 6 &&						#from starting position
 												move_to[0] == 4	&&							#special move
+												board[move_to].nil? && board[[move_to[0] + 1, move_to[1]]].nil? && 	# must be empty
 												@colour == "black" &&						#for black pawns
 												board[[move_from[0] - 1, move_from[1]]].nil?
 		if board[move_to]

@@ -10,7 +10,7 @@ class Board
 	def initialize(board = nil)
 		@background = "8| _ _ _ _ _ _ _ _\n7| _ _ _ _ _ _ _ _\n6| _ _ _ _ _ _ _ _\n5| _ _ _ _ _ _ _ _\n4| _ _ _ _ _ _ _ _\n3| _ _ _ _ _ _ _ _\n2| _ _ _ _ _ _ _ _\n1| _ _ _ _ _ _ _ _\n==================\n | a b c d e f g h"
 		if board
-			@board = board
+			@board = board.dup
 			return
 		end
 		@board = {}				
@@ -52,8 +52,8 @@ class Board
 		puts place_chessmen
 	end
 
-	def reflect_move(move_from, move_to, checking = false)
-		if checking || valid_move?(move_from, move_to)
+	def reflect_move(move_from, move_to, colour, checking = false) # 1-colour, 2-checking		
+		if checking || valid_move?(move_from, move_to, colour)
 			chessman = @board.delete(move_from)			
 			@board[move_to] = chessman
 			return true
@@ -61,32 +61,41 @@ class Board
 		false
 	end
 
-	def valid_move?(move_from, move_to)		
+	def valid_move?(move_from, move_to, colour)		
 		chessman = @board[move_from]
-		chessman.valid_move?(move_from, move_to, board)
+		return false if chessman.colour != colour
+		chessman.valid_move?(move_from, move_to, @board)
 	end
 
-	def checkmate?(colour)		
-		temp_board = Board.new
-
+	def checkmate?(colour)
+		enemy_king_position = get_enemy_king_position(colour)
+		enemy_king = @board[enemy_king_position]
+		enemy_king.get_valid_move(enemy_king_position, @board) ? false : true
 	end
 
 	def check?(colour)
-		enemy_king = @board.select do |position, chessman|			
-			chessman.colour != colour && chessman.is_a?(King)
-		end		
-		king_position = enemy_king.keys[0]
+		# enemy_king = @board.select do |position, chessman|			
+		# 	chessman.colour != colour && chessman.is_a?(King)
+		# end		
+		enemy_king_position = get_enemy_king_position(colour)
 		loyal_chessmen = @board.select do |position, chessman|
 			chessman.colour == colour
 		end
 		check = false
 		loyal_chessmen.each do |position, chessman|
-			check ||= chessman.valid_move?(position, king_position, @board)
+			check ||= chessman.valid_move?(position, enemy_king_position, @board)
 		end
 		check
 	end
 
 	private
+
+	def get_enemy_king_position(colour)
+		enemy_king = @board.select do |position, chessman|			
+			chessman.colour != colour && chessman.is_a?(King)
+		end		
+		enemy_king.keys[0]
+	end
 
 	def place_chessmen
 		background = @background.split("\n")			
