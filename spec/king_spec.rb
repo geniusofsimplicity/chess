@@ -14,8 +14,7 @@ describe King do
 		board.instance_variable_set(:@board, {})		
 		board.send(:add_chessman, move_from, king)
 		board
-	end
-	let(:board_values){ board.instance_variable_get(:@board) }
+	end	
 	let(:move_to) do
 		directions = {}
 		directions[1] = move_from[0] < 7
@@ -51,7 +50,7 @@ describe King do
 	end
 
 	context "performing validly" do
-		it { expect(king.valid_move?(move_from, move_to, board_values)).to be_truthy }
+		it { expect(king.valid_move?(move_from, move_to, board)).to be_truthy }
 	end
 
 	context "performing invalidly" do
@@ -77,9 +76,8 @@ describe King do
 			board.send(:add_chessman, queen_position, enemy_queen)			
 			board
 		end
-		let(:board_values_with_queen){ board_with_queen.instance_variable_get(:@board) }
 
-		it { expect(king.valid_move?(move_from, move_to, board_values_with_queen)).to be_falsey }
+		it { expect(king.valid_move?(move_from, move_to, board_with_queen)).to be_falsey }
 
 	end
 	

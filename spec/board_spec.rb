@@ -72,7 +72,7 @@ describe Board do
 			board.send(:add_chessman, [1, "h"], pawn)
 			board
 		end
-		it { expect(board_with_one_piece.instance_variable_get(:@board)).to eql({[1, "h"] => pawn}) }
+		it { expect(board_with_one_piece.board).to eql({[1, "h"] => pawn}) }
 	end
 	describe "#checkmate?" do
 		# most test cases have duplicate to test behaviour of Queen, Bishop and Rook separately

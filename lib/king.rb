@@ -11,7 +11,8 @@ class King < Chessman
 	end
 
 	#TODO: add special move of the king
-	def valid_move?(move_from, move_to, board_values)
+	def valid_move?(move_from, move_to, board_object)
+		board_values = board_object.board
 		board = Board.new(board_values)
 		diff_in_rows = (move_from[0] - move_to[0]).abs
 		diff_in_columns = (move_from[1].ord - move_to[1].ord).abs
@@ -19,16 +20,16 @@ class King < Chessman
 		diff_in_columns < 2 && diff_in_rows < 2 && board_values[move_to].nil? && not_in_check?(move_from, move_to, board)
 	end
 
-	def get_valid_move(move_from, board_values)
+	def get_valid_move(move_from, board_object)
 		directions = {}
-		directions[1] = move_from[0] < 7 && valid_move?(move_from, [move_from[0] + 1, move_from[1]], board_values)
-		directions[2] = move_from[0] < 7 && move_from[1] < "h" && valid_move?(move_from, [move_from[0] + 1, move_from[1].next], board_values)
-		directions[3] = move_from[1] < "h" && valid_move?(move_from, [move_from[0], move_from[1].next], board_values)
-		directions[4] = move_from[0] > 0 && move_from[1] < "h" && valid_move?(move_from, [move_from[0] - 1, move_from[1].next], board_values)
-		directions[5] = move_from[0] > 0 && valid_move?(move_from, [move_from[0] - 1, move_from[1]], board_values)
-		directions[6] = move_from[0] > 0 && move_from[1] > "a" && valid_move?(move_from, [move_from[0] - 1, (move_from[1].ord - 1).chr], board_values)
-		directions[7] = move_from[1] > "a" && valid_move?(move_from, [move_from[0], (move_from[1].ord - 1).chr], board_values)
-		directions[8] = move_from[0] < 7 && move_from[1] > "a" && valid_move?(move_from, [move_from[0] + 1, (move_from[1].ord - 1).chr], board_values)
+		directions[1] = move_from[0] < 7 && valid_move?(move_from, [move_from[0] + 1, move_from[1]], board_object)
+		directions[2] = move_from[0] < 7 && move_from[1] < "h" && valid_move?(move_from, [move_from[0] + 1, move_from[1].next], board_object)
+		directions[3] = move_from[1] < "h" && valid_move?(move_from, [move_from[0], move_from[1].next], board_object)
+		directions[4] = move_from[0] > 0 && move_from[1] < "h" && valid_move?(move_from, [move_from[0] - 1, move_from[1].next], board_object)
+		directions[5] = move_from[0] > 0 && valid_move?(move_from, [move_from[0] - 1, move_from[1]], board_object)
+		directions[6] = move_from[0] > 0 && move_from[1] > "a" && valid_move?(move_from, [move_from[0] - 1, (move_from[1].ord - 1).chr], board_object)
+		directions[7] = move_from[1] > "a" && valid_move?(move_from, [move_from[0], (move_from[1].ord - 1).chr], board_object)
+		directions[8] = move_from[0] < 7 && move_from[1] > "a" && valid_move?(move_from, [move_from[0] + 1, (move_from[1].ord - 1).chr], board_object)
 		valid_directions = directions.select{|k, v| v}
 		valid_directions = valid_directions.keys
 		choice = valid_directions.sample

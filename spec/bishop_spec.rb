@@ -13,7 +13,7 @@ describe Bishop do
 			board.send(:add_chessman, move_from, bishop)
 			board
 		end
-		let(:board_values){ board.instance_variable_get(:@board) }
+		
 		def get_valid_move(squares)
 			#north-east
 			direction1 = [7 - move_from[0], "h".ord - move_from[1].ord].min
@@ -57,7 +57,7 @@ describe Bishop do
 				get_valid_move(0)
 			end
 
-			it { expect(bishop.valid_move?(move_from, move_to_valid, board_values)).to be_truthy }
+			it { expect(bishop.valid_move?(move_from, move_to_valid, board)).to be_truthy }
 		end
 
 		context "performing invalidly" do
@@ -88,11 +88,11 @@ describe Bishop do
 				board.send(:add_chessman, pawn_position, Pawn.new(["white", "black"].sample))
 				board
 			end
-			let(:board_values_leap){ board_with_leap.instance_variable_get(:@board) }
-			it { expect(bishop.valid_move?(move_from, move_to_invalid, board_values)).to be_falsey }
+			
+			it { expect(bishop.valid_move?(move_from, move_to_invalid, board)).to be_falsey }
 
 			it "leaping over" do
-				expect(bishop.valid_move?(move_from, move_to_valid_1, board_values_leap)).to be_falsey				
+				expect(bishop.valid_move?(move_from, move_to_valid_1, board_with_leap)).to be_falsey				
 			end
 		end
 

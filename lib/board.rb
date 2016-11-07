@@ -67,7 +67,7 @@ class Board
 	def valid_move?(move_from, move_to, colour)		
 		chessman = @board[move_from]
 		return false if chessman.colour != colour
-		chessman.valid_move?(move_from, move_to, @board)
+		chessman.valid_move?(move_from, move_to, self)
 	end
 
 	def checkmate?(colour) # colour of the current player
@@ -76,7 +76,7 @@ class Board
 		enemy_king = @board[enemy_king_position]
 
 		# condition 1
-		move = enemy_king.get_valid_move(enemy_king_position, @board)
+		move = enemy_king.get_valid_move(enemy_king_position, self)
 		condition1 = move ? false : true
 
 		# condition 2: the threat can be eliminated
@@ -129,7 +129,7 @@ class Board
 						loyal_chessmen_without_king.each do |position, chessman|
 							board = Board.new(@board)
 							board.reflect_move(position, current_square, colour_enemy)
-							can_be_blocked = true if chessman.valid_move?(position, current_square, @board)
+							can_be_blocked = true if chessman.valid_move?(position, current_square, self)
 							result = !board.check?(colour)
 							can_be_blocked ||= result
 						end
@@ -187,7 +187,7 @@ class Board
 						loyal_chessmen_without_king.each do |position, chessman|
 							board = Board.new(@board)
 							board.reflect_move(position, current_square, colour_enemy)
-							can_be_blocked = true if chessman.valid_move?(position, current_square, @board)
+							can_be_blocked = true if chessman.valid_move?(position, current_square, self)
 							result = !board.check?(colour)
 							can_be_blocked ||= result
 						end
@@ -206,7 +206,7 @@ class Board
 		loyal_chessmen = get_loyal_chessmen(colour)
 		check = false
 		loyal_chessmen.each do |position, chessman|
-			check ||= chessman.valid_move?(position, enemy_king_position, @board)
+			check ||= chessman.valid_move?(position, enemy_king_position, self)
 		end
 		check
 	end

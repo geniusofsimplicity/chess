@@ -11,8 +11,7 @@ describe Knight do
 			board.instance_variable_set(:@board, {})		
 			board.send(:add_chessman, move_from, knight)
 			board
-		end
-		let(:board_values){ board.instance_variable_get(:@board) }
+		end		
 		let(:move_to_valid) do
 			pool_of_moves = [1, 2].shuffle
 			rank_move = pool_of_moves.pop * [-1, 1].sample
@@ -21,7 +20,7 @@ describe Knight do
 			move_to
 		end
 		context "performing validly" do			
-			it {	expect(knight.valid_move?(move_from, move_to_valid, board_values)).to be_truthy }			
+			it {	expect(knight.valid_move?(move_from, move_to_valid, board)).to be_truthy }			
 		end
 
 		context "performing invalidly" do
@@ -37,9 +36,9 @@ describe Knight do
 				move_to[1] = (("a".."h").to_a - [(move_from[1].ord - 1).chr, (move_from[1].ord - 2).chr, (move_from[1].ord + 1).chr, (move_from[1].ord + 2).chr]).sample				
 				move_to
 			end
-			it {	expect(knight.valid_move?(move_from, move_to_invalid_1, board_values)).to be_falsey }
+			it {	expect(knight.valid_move?(move_from, move_to_invalid_1, board)).to be_falsey }
 
-			it { expect(knight.valid_move?(move_from, move_to_invalid_2, board_values)).to be_falsey }
+			it { expect(knight.valid_move?(move_from, move_to_invalid_2, board)).to be_falsey }
 		end
 	end
 	

@@ -13,8 +13,7 @@ describe Queen do
 				board.instance_variable_set(:@board, {})		
 				board.send(:add_chessman, move_from, queen)
 				board
-			end
-			let(:board_values){ board.instance_variable_get(:@board) }
+			end			
 			def get_valid_move(squares)
 				#north-east
 				direction1 = [7 - move_from[0], "h".ord - move_from[1].ord].min
@@ -58,7 +57,7 @@ describe Queen do
 					get_valid_move(0)
 				end
 
-				it { expect(queen.valid_move?(move_from, move_to_valid, board_values)).to be_truthy }
+				it { expect(queen.valid_move?(move_from, move_to_valid, board)).to be_truthy }
 			end
 
 			context "performing invalidly" do
@@ -89,11 +88,11 @@ describe Queen do
 					board.send(:add_chessman, pawn_position, Pawn.new(["white", "black"].sample))
 					board
 				end
-				let(:board_values_leap){ board_with_leap.instance_variable_get(:@board) }
-				it { expect(queen.valid_move?(move_from, move_to_invalid, board_values)).to be_falsey }
+
+				it { expect(queen.valid_move?(move_from, move_to_invalid, board)).to be_falsey }
 
 				it "leaping over" do
-					expect(queen.valid_move?(move_from, move_to_valid_1, board_values_leap)).to be_falsey				
+					expect(queen.valid_move?(move_from, move_to_valid_1, board_with_leap)).to be_falsey				
 				end
 			end
 		end
@@ -110,7 +109,6 @@ describe Queen do
 				board.send(:add_chessman, move_from, queen)
 				board
 			end
-			let(:board_values){ board.instance_variable_get(:@board) }
 
 			context "performing validly" do
 				let(:move_in_rank_up_to){ [ rand(2) + 6, move_from[1]] }
@@ -119,16 +117,16 @@ describe Queen do
 				let(:move_in_file_right_to){ [ move_from[0], (97 + rand(3) + 5).chr] }
 
 				it "a rank move up" do				
-					expect(queen.valid_move?(move_from, move_in_rank_up_to, board_values)).to be_truthy
+					expect(queen.valid_move?(move_from, move_in_rank_up_to, board)).to be_truthy
 				end
 				it "a rank move down" do				
-					expect(queen.valid_move?(move_from, move_in_rank_down_to, board_values)).to be_truthy
+					expect(queen.valid_move?(move_from, move_in_rank_down_to, board)).to be_truthy
 				end
 				it "a file move to the left" do				
-					expect(queen.valid_move?(move_from, move_in_file_left_to, board_values)).to be_truthy
+					expect(queen.valid_move?(move_from, move_in_file_left_to, board)).to be_truthy
 				end
 				it "a file move to the right" do				
-					expect(queen.valid_move?(move_from, move_in_file_right_to, board_values)).to be_truthy
+					expect(queen.valid_move?(move_from, move_in_file_right_to, board)).to be_truthy
 				end
 			end
 
@@ -143,40 +141,36 @@ describe Queen do
 					board.send(:add_chessman, [ move_in_rank_up_to[0] - 1, move_in_rank_up_to[1]], Pawn.new(["black", "white"].sample))
 					board
 				end
-				let(:board_value_leap_rank_up){ board_leap_rank_up.instance_variable_get(:@board) }
 				let(:board_leap_rank_down) do
 					board = Board.new
 					board.instance_variable_set(:@board, {})		
 					board.send(:add_chessman, [ move_in_rank_down_to[0] + 1, move_in_rank_down_to[1]], Pawn.new(["black", "white"].sample))
 					board
 				end
-				let(:board_value_leap_rank_down){ board_leap_rank_down.instance_variable_get(:@board) }
 				let(:board_leap_file_left) do
 					board = Board.new
 					board.instance_variable_set(:@board, {})		
 					board.send(:add_chessman, [ move_in_file_left_to[0], (move_in_file_left_to[1].ord + 1).chr], Pawn.new(["black", "white"].sample))
 					board
 				end
-				let(:board_value_leap_file_left){ board_leap_file_left.instance_variable_get(:@board) }
 				let(:board_leap_file_right) do
 					board = Board.new
 					board.instance_variable_set(:@board, {})		
 					board.send(:add_chessman, [ move_in_file_right_to[0], (move_in_file_right_to[1].ord - 1).chr], Pawn.new(["black", "white"].sample))
 					board
 				end
-				let(:board_value_leap_file_right){ board_leap_file_right.instance_variable_get(:@board) }
 
 				it "a leaping rank move up" do				
-					expect(queen.valid_move?(move_from, move_in_rank_up_to, board_value_leap_rank_up)).to be_falsey
+					expect(queen.valid_move?(move_from, move_in_rank_up_to, board_leap_rank_up)).to be_falsey
 				end
 				it "a leaping rank move down" do				
-					expect(queen.valid_move?(move_from, move_in_rank_down_to, board_value_leap_rank_down)).to be_falsey
+					expect(queen.valid_move?(move_from, move_in_rank_down_to, board_leap_rank_down)).to be_falsey
 				end
 				it "a file move to the left" do				
-					expect(queen.valid_move?(move_from, move_in_file_left_to, board_value_leap_file_left)).to be_falsey
+					expect(queen.valid_move?(move_from, move_in_file_left_to, board_leap_file_left)).to be_falsey
 				end
 				it "a file move to the right" do				
-					expect(queen.valid_move?(move_from, move_in_file_right_to, board_value_leap_file_right)).to be_falsey
+					expect(queen.valid_move?(move_from, move_in_file_right_to, board_leap_file_right)).to be_falsey
 				end
 			end
 

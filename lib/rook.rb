@@ -9,7 +9,8 @@ class Rook < Chessman
 		return U_SYMBOL_BLACK if @colour == "black"
 	end
 
-	def valid_move?(move_from, move_to, board)
+	def valid_move?(move_from, move_to, board_object)
+		board = board_object.board
 		diff_in_rows = (move_from[0] - move_to[0]).abs
 		diff_in_columns = (move_from[1].ord - move_to[1].ord).abs		
 
