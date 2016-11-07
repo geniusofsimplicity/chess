@@ -6,7 +6,7 @@ require_relative "knight.rb"
 require_relative "pawn.rb"
 
 class Board
-	attr_reader :board
+	attr_reader :board, :last_move
 	def initialize(board = nil)
 		# square_sym = "\u25A1"
 		square_sym = "\u2B1C"

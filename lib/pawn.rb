@@ -50,9 +50,30 @@ class Pawn < Chessman
 												board[move_to].colour == "white" &&	
 												@colour == "black"									#for black pawns
 		end
+		last_move = board_object.last_move
+		if last_move && last_move[2].class == Pawn
+			en_passant_move_white =
+												move_from[0] == 4 &&	
+												move_to[0] == 5 &&
+												last_move[0][0] == 6 && # black pawn from rank 7
+												last_move[1][0] == 4 && # to rank 5 -> first special move
+												last_move[1][1] == move_to[1] &&
+												@colour == "white"
+
+			en_passant_move_black =
+												move_from[0] == 3 &&
+												move_to[0] == 2 &&
+												last_move[0][0] == 1 && # black pawn from rank 7
+												last_move[1][0] == 3 && # to rank 5 -> first special move
+												last_move[1][1] == move_to[1] &&
+												@colour == "black"
+		end
+		
+
 		
 		normal_move_white || normal_move_black ||
 			first_move_white || first_move_black ||
-			capture_by_white || capture_by_black
+			capture_by_white || capture_by_black ||
+			en_passant_move_black || en_passant_move_white
 	end
 end

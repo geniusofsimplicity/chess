@@ -36,13 +36,23 @@ describe Pawn do
 				let(:colour_loyal) { "white" }
 				let(:colour_enemy) { "black" }
 				let(:pawn_b_en_passant){ Pawn.new(colour_enemy) }
-				let(:board_en_passant) do			
+				let(:board_en_passant_b) do			
 					board = Board.new({})
 					board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
 					board.send(:add_chessman, [7, "a"], King.new(colour_enemy))					
 					board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))					
 					board.send(:add_chessman, [3, "f"], pawn_b_en_passant)
 					board.reflect_move([1, "e"], [3, "e"], colour_loyal)
+					board
+				end
+				let(:pawn_w_en_passant){ Pawn.new(colour_loyal) }
+				let(:board_en_passant_w) do			
+					board = Board.new({})
+					board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+					board.send(:add_chessman, [7, "a"], King.new(colour_enemy))					
+					board.send(:add_chessman, [6, "e"], Pawn.new(colour_enemy))					
+					board.send(:add_chessman, [4, "d"], pawn_w_en_passant)
+					board.reflect_move([6, "e"], [4, "e"], colour_enemy)
 					board
 				end
 
@@ -59,8 +69,11 @@ describe Pawn do
 					expect(pawn_w.valid_move?(move_from, move_to_capture_b_2, board_w_2)).to be_truthy
 				end
 
-				it "En passant" do
-					expect(pawn_b_en_passant.valid_move?([3, "f"], [2, "e"], board_en_passant)).to be_truthy
+				it "En passant for black pawn" do
+					expect(pawn_b_en_passant.valid_move?([3, "f"], [2, "e"], board_en_passant_b)).to be_truthy
+				end
+				it "En passant for white pawn" do
+					expect(pawn_w_en_passant.valid_move?([4, "d"], [5, "e"], board_en_passant_w)).to be_truthy
 				end
 			end
 			context "performing invalidly" do			
