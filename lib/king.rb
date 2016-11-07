@@ -56,11 +56,10 @@ class King < Chessman
 	end
 
 	private
-
-	# TODO: think about moving the method to the Board class
+		
 	def not_in_check?(move_from, move_to, board)
 		board.reflect_move(move_from, move_to, @colour, true)
-		result = !board.check?((@@colours - [@colour])[0])
+		result = !board.check?((@@colours - [@colour])[0])		
 		result
 	end
 end

@@ -8,4 +8,8 @@ class Chessman
 	def self.colours
 		@@colours		
 	end
+
+	def self.get_enemy_colour(loyal_colour)
+		(@@colours - [loyal_colour])[0]
+	end
 end

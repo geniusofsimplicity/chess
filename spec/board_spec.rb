@@ -5,6 +5,7 @@ require "rook.rb"
 require "bishop.rb"
 require "knight.rb"
 require "pawn.rb"
+require "chessman.rb"
 
 describe Board do
 	describe ".new" do
@@ -72,5 +73,230 @@ describe Board do
 			board
 		end
 		it { expect(board_with_one_piece.instance_variable_get(:@board)).to eql({[1, "h"] => pawn}) }
+	end
+	describe "#checkmate?" do
+		# most test cases have duplicate to test behaviour of Queen, Bishop and Rook separately
+		let(:colour_loyal) { "white" }
+		let(:colour_enemy) { "black" }
+		context "resolving positively" do
+			let(:board_checkmate) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Bishop.new(colour_enemy))
+				board.send(:add_chessman, [3, "h"], Bishop.new(colour_enemy))
+				board
+			end
+			let(:board_checkmate_01) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Queen.new(colour_enemy))
+				board.send(:add_chessman, [3, "h"], Queen.new(colour_enemy))
+				board
+			end
+			let(:board_checkmate_2) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Queen.new(colour_enemy))
+				board.send(:add_chessman, [5, "d"], Queen.new(colour_enemy))
+				board.reflect_move([5, "d"], [2, "g"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_21) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Bishop.new(colour_enemy))
+				board.send(:add_chessman, [5, "d"], Bishop.new(colour_enemy))
+				board.reflect_move([5, "d"], [2, "g"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_3) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "f"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "a"], Rook.new(colour_enemy))				
+				board.reflect_move([3, "a"], [3, "e"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_31) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "f"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "a"], Queen.new(colour_enemy))				
+				board.reflect_move([3, "a"], [3, "e"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_4) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))				
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "h"], Rook.new(colour_enemy))				
+				board.reflect_move([3, "h"], [0, "h"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_41) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))				
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "h"], Queen.new(colour_enemy))				
+				board.reflect_move([3, "h"], [0, "h"], colour_enemy)
+				board
+			end
+
+			it { expect(board_checkmate.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_01.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_2.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_21.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_3.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_31.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_4.checkmate?(colour_enemy)).to be_truthy }
+			it { expect(board_checkmate_41.checkmate?(colour_enemy)).to be_truthy }
+		end
+
+		context "resolving negatively" do
+			let(:board_checkmate) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [5, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Queen.new(colour_enemy))
+				board.send(:add_chessman, [3, "a"], Queen.new(colour_enemy))
+				board.reflect_move([3, "a"], [3, "h"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_01) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [5, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Bishop.new(colour_enemy))
+				board.send(:add_chessman, [6, "e"], Bishop.new(colour_enemy))
+				board.reflect_move([6, "e"], [3, "h"], colour_enemy)
+				board
+			end
+
+			let(:board_checkmate_2) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "g"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [3, "b"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [0, "h"], Rook.new(colour_enemy))
+				board.send(:add_chessman, [2, "h"], Queen.new(colour_enemy))
+				board.send(:add_chessman, [7, "d"], Queen.new(colour_enemy))
+				board.reflect_move([7, "d"], [3, "h"], colour_enemy)
+				board
+			end
+
+			let(:board_checkmate_3) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "f"], Bishop.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "a"], Rook.new(colour_enemy))				
+				board.reflect_move([3, "a"], [3, "e"], colour_enemy)								
+				board
+			end
+			let(:board_checkmate_31) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))
+				board.send(:add_chessman, [0, "f"], Bishop.new(colour_loyal))
+				board.send(:add_chessman, [0, "d"], Queen.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))				
+				board.send(:add_chessman, [3, "a"], Queen.new(colour_enemy))				
+				board.reflect_move([3, "a"], [3, "e"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_4) do			
+				board = Board.new({})				
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))				
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Bishop.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [3, "h"], Rook.new(colour_enemy))				
+				board.reflect_move([3, "h"], [0, "h"], colour_enemy)
+				board
+			end
+			let(:board_checkmate_41) do			
+				board = Board.new({})				
+				board.send(:add_chessman, [0, "e"], King.new(colour_loyal))
+				board.send(:add_chessman, [7, "a"], King.new(colour_enemy))				
+				board.send(:add_chessman, [0, "d"], Rook.new(colour_loyal))
+				board.send(:add_chessman, [1, "d"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [1, "e"], Bishop.new(colour_loyal))
+				board.send(:add_chessman, [1, "f"], Pawn.new(colour_loyal))
+				board.send(:add_chessman, [3, "h"], Queen.new(colour_enemy))				
+				board.reflect_move([3, "h"], [0, "h"], colour_enemy)
+				board
+			end
+
+			it { expect(board_checkmate.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_01.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_2.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_3.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_31.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_4.checkmate?(colour_enemy)).to be_falsey }
+			it { expect(board_checkmate_41.checkmate?(colour_enemy)).to be_falsey }
+		end
+		
 	end	
 end

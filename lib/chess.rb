@@ -34,9 +34,9 @@ class Chess
 				break				
 			end
 			if check
-				puts "CHECK! #{@current_player}, your king is in danger!"
+				puts "CHECK! #{get_enemy_player}, your king is in danger!"
 			end
-			@current_player = @current_player == @player1 ? @player2 : @player1			
+			@current_player = @current_player == @player1 ? @player2 : @player1
 		end
 		if winner
 			@board.print
@@ -48,6 +48,10 @@ class Chess
 	end
 
 	private
+
+	def get_enemy_player
+		@current_player == @player1 ? @player2 : @player1
+	end
 
 	def get_move_start
 		puts "Please, enter the position of the chessman"\
@@ -85,5 +89,5 @@ class Chess
 	end
 end
 
-game = Chess.setup
-game.start
+# game = Chess.setup
+# game.start

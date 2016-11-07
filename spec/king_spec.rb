@@ -74,7 +74,7 @@ describe King do
 			board = Board.new
 			board.instance_variable_set(:@board, {})		
 			board.send(:add_chessman, move_from, king)
-			board.send(:add_chessman, queen_position, enemy_queen)
+			board.send(:add_chessman, queen_position, enemy_queen)			
 			board
 		end
 		let(:board_values_with_queen){ board_with_queen.instance_variable_get(:@board) }

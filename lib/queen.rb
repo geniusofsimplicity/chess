@@ -18,8 +18,7 @@ class Queen < Chessman
 		file_move = diff_in_rows == 0 && diff_in_columns > 0
 
 		no_leap = false
-
-		# TODO: move diagonal_move, rank_move and file_move methods to the Chessman class
+		
 		if diagonal_move
 			in_the_way = 0
 			rank_sign = move_to[0] <=> move_from[0]
@@ -27,9 +26,7 @@ class Queen < Chessman
 			(diff_in_columns - 1).times do |i|
 				current_square = [move_from[0] + (i + 1) * rank_sign, (move_from[1].ord + (i + 1) * file_sign).chr]
 				in_the_way += 1 if board[current_square]
-			end
-				# (diff_in_columns == diff_in_rows) && (position != move_to) && (self != chessman)
-			
+			end			
 			no_leap = in_the_way == 0
 		end
 
