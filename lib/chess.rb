@@ -89,5 +89,5 @@ class Chess
 	end
 end
 
-# game = Chess.setup
-# game.start
+game = Chess.setup
+game.start

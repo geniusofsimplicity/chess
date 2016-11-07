@@ -80,5 +80,85 @@ describe King do
 		it { expect(king.valid_move?(move_from, move_to, board_with_queen)).to be_falsey }
 
 	end
+
+	describe "#castling_possible?" do
+		context "positively" do
+			let(:board_castling_white) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "e"], king_b)
+				board.send(:add_chessman, [0, "h"], Rook.new("white"))
+				board.send(:add_chessman, [0, "a"], Rook.new("white"))
+				board
+			end
+			let(:board_castling_black) do			
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "e"], king_b)
+				board.send(:add_chessman, [7, "h"], Rook.new("black"))
+				board.send(:add_chessman, [7, "a"], Rook.new("black"))
+				board
+			end
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "h"], board_castling_white)).to be_truthy }
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "a"], board_castling_white)).to be_truthy }
+			it { expect(king_w.send(:castling_possible?, [7, "e"], [7, "h"], board_castling_black)).to be_truthy }
+			it { expect(king_w.send(:castling_possible?, [7, "e"], [7, "a"], board_castling_black)).to be_truthy }
+		end
+		context "negatively" do
+			let(:board_no_castling_white) do
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "a"], king_b)
+				board.send(:add_chessman, [0, "h"], Rook.new("white"))
+				board.send(:add_chessman, [0, "a"], Rook.new("white"))				
+				board.send(:add_chessman, [5, "b"], Rook.new("black"))
+				board.send(:add_chessman, [5, "f"], Rook.new("black"))
+				board
+			end
+			let(:board_no_castling_black) do
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "e"], king_b)
+				board.send(:add_chessman, [7, "h"], Rook.new("black"))
+				board.send(:add_chessman, [7, "a"], Rook.new("black"))
+				board.send(:add_chessman, [5, "b"], Rook.new("white"))
+				board.send(:add_chessman, [5, "f"], Rook.new("white"))
+				board
+			end
+			let(:board_no_castling_black_2) do
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "e"], king_b)
+				board.send(:add_chessman, [7, "h"], Rook.new("black"))
+				board.send(:add_chessman, [7, "a"], Rook.new("black"))
+				board.reflect_move([7, "a"], [1, "a"], "black")
+				board.reflect_move([1, "a"], [7, "a"], "black")
+				board.reflect_move([7, "h"], [1, "h"], "black")
+				board.reflect_move([1, "h"], [7, "h"], "black")
+				board
+			end
+			let(:board_no_castling_white_2) do
+				board = Board.new({})
+				board.send(:add_chessman, [0, "e"], king_w)
+				board.send(:add_chessman, [7, "e"], king_b)
+				board.send(:add_chessman, [0, "h"], Rook.new("white"))
+				board.send(:add_chessman, [0, "a"], Rook.new("white"))
+				board.reflect_move([0, "a"], [1, "a"], "white")
+				board.reflect_move([1, "a"], [0, "a"], "white")
+				board.reflect_move([0, "h"], [1, "h"], "white")
+				board.reflect_move([1, "h"], [0, "h"], "white")
+				board
+			end
+
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "h"], board_no_castling_white)).to be_falsey }
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "a"], board_no_castling_white)).to be_falsey }
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "h"], board_no_castling_white_2)).to be_falsey }
+			it { expect(king_w.send(:castling_possible?, [0, "e"], [0, "a"], board_no_castling_white_2)).to be_falsey }
+			it { expect(king_b.send(:castling_possible?, [7, "e"], [7, "h"], board_no_castling_black)).to be_falsey }
+			it { expect(king_b.send(:castling_possible?, [7, "e"], [7, "a"], board_no_castling_black)).to be_falsey }
+			it { expect(king_b.send(:castling_possible?, [7, "e"], [7, "h"], board_no_castling_black_2)).to be_falsey }
+			it { expect(king_b.send(:castling_possible?, [7, "e"], [7, "a"], board_no_castling_black_2)).to be_falsey }
+		end
+	end
 	
 end

@@ -59,6 +59,7 @@ class Board
 			chessman = @board.delete(move_from)
 			@last_move = [move_from, move_to, chessman]
 			@board[move_to] = chessman
+			chessman.increase_move_count unless checking
 			return true
 		end
 		false
